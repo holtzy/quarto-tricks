@@ -1,0 +1,9 @@
+---
+title: "Text Formatting"
+format: html
+editor: visual
+---
+
+This is a very **short** document! It showcases how to use text formatting in a [quarto document](https://www.productive-r-workflow.com). 
+
+When you talk about `ggplot2`, do not forget to format it as _code_!
