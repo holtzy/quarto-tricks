@@ -1,0 +1,13 @@
+---
+title: "Horizontal separator"
+format: html
+editor: visual
+---
+
+I have a strong preference for minimalist documents with ample spacing. This design approach ensures readability and visual appeal.
+
+A practical method for delineating sections in a document is by using a horizontal line separator. This can be easily achieved by inserting three asterisks:
+
+------------------------------------------------------------------------
+
+Not too bad to show a separation!
