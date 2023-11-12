@@ -1,0 +1,22 @@
+---
+title: "Title numbering"
+format: html
+editor: visual
+number-sections: true
+---
+
+# First title
+
+The first title will be prepended with the number 1!
+
+{r} 1 + 1
+
+# Second title
+
+And so on of course!
+
+## And it works
+
+For subtitles
+
+## Too
