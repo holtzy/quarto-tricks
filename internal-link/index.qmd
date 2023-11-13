@@ -1,0 +1,48 @@
+---
+title: "Internal link"
+format: html
+editor: visual
+---
+
+This document shows how to create an **internal link** in a Quarto report. In the **4th section** of the doc, you will find a link that leads to the **second section**.
+
+# Load packages
+
+Let's load some packages
+
+```{r message=FALSE}
+library(tidyverse)
+
+```
+
+# Data wrangling {#section-2}
+
+Let's do some data wrangling.
+
+Again and again.
+
+It usually takes most of the project time!
+
+# Create a chart
+
+The fun part!
+
+```{r}
+mpg %>%
+  ggplot( aes(x=reorder(class, hwy), y=hwy, fill=class)) + 
+    geom_boxplot() +
+    xlab("class") +
+    theme(legend.position="none")
+```
+
+And a scatterplot!
+```{r}
+mpg %>%
+  ggplot(aes(x = fl, y = hwy, fill = class)) +
+  geom_point()
+```
+
+
+# Conclusion
+
+Here is the link to the [section 2](#section-2) of the document!
