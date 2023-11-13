@@ -1,0 +1,12 @@
+---
+title: "Report with a footer"
+include-after-body: "footer.html"
+---
+
+Check the bottom of this doc! It should have a footer!
+
+```{r}
+plot(1,1)
+```
+
+When someone reads your doc, it is handy for him to have useful links at the bottom!
