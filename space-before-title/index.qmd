@@ -1,0 +1,24 @@
+---
+title: "A doc with space before titles"
+format: html
+css: style.css
+editor: visual
+---
+
+# Intro
+
+This doc shows how to add space on top of titles to give some more breath to the document
+
+# Loading a css file
+
+First you have to load an external css sheet called `style.css`. And then
+
+# Fill the stylesheet 
+
+And then put something like this in the stylesheet:
+
+```         
+h1, .h1, h2, .h2, h3, .h3 {
+  margin-top: 84px;
+}
+```
