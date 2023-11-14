@@ -1,0 +1,28 @@
+---
+title: "Interactive Table"
+format: html
+editor: visual
+---
+
+It is pretty easy to insert an interactive table in your quarto doc thanks to the DT table.
+
+Start by installing the package with `install.packages("DT")`\`
+
+Then load the package in your doc:
+
+```{r}
+library(DT)
+```
+
+Then you just have to pass a dataframe to the `datatable()`\` function:\
+
+```{r}
+# load the iris dataset
+data(iris)
+
+# Make a table
+datatable(iris,
+  filter = "top",
+)
+
+```
