@@ -1,0 +1,49 @@
+---
+title: "Using tabs in Quarto"
+format: html
+editor: visual
+css: style.css
+---
+
+Let's create 3 charts for the `penguins` dataset:
+
+```{r}
+library(ggplot2)
+library(palmerpenguins)
+```
+
+::: {.panel-tabset .nav-pills}
+
+## Scatterplot
+```{r, warning=FALSE}
+ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
+    geom_point() +
+    labs(title = "Flipper Length vs Body Mass by Species",
+         x = "Flipper Length (mm)",
+         y = "Body Mass (g)") +
+    theme_minimal()
+
+```
+
+## Boxplot
+```{r, warning=FALSE}
+ggplot(penguins, aes(x = species, y = bill_length_mm, fill = species)) +
+    geom_boxplot() +
+    labs(title = "Bill Length Distribution by Species",
+         x = "Species",
+         y = "Bill Length (mm)") +
+    theme_minimal()
+
+```
+
+
+## Barplot
+```{r, warning=FALSE}
+ggplot(penguins, aes(x = species, y = body_mass_g, fill = species)) +
+    geom_bar(stat = "summary", fun = "mean") +
+    labs(title = "Average Body Mass of Penguin Species",
+         x = "Species",
+         y = "Average Body Mass (g)") +
+    theme_minimal()
+```
+:::

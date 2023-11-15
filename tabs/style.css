@@ -1,0 +1,4 @@
+.panel-tabset > .nav-tabs,
+.panel-tabset > .tab-content {
+  border: none;
+}
