@@ -1,0 +1,28 @@
+---
+title: "Hide code in report"
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
+editor: visual
+---
+
+Sometimes code just takes too much space on the doc.\
+\
+This is even more true if readers most likely don't know how to read it.\
+\
+In this case, you can hide code chunks, and display a small button to show them if needed.
+
+Let's do it! The chart for this code is hidden.
+
+```{r warning=FALSE}
+library(ggplot2)
+library(palmerpenguins)
+
+ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
+    geom_point() +
+    labs(title = "Flipper Length vs Body Mass by Species",
+         x = "Flipper Length (mm)",
+         y = "Body Mass (g)") +
+    theme_minimal()
+```
