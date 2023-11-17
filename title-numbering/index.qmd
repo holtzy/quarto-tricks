@@ -9,7 +9,7 @@ number-sections: true
 
 The first title will be prepended with the number 1!
 
-{r} 1 + 1
+`{r} 1 + 1`
 
 # Second title
 
