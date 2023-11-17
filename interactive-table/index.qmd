@@ -6,7 +6,7 @@ editor: visual
 
 It is pretty easy to insert an interactive table in your quarto doc thanks to the DT table.
 
-Start by installing the package with `install.packages("DT")`\`
+Start by installing the package with `install.packages("DT")`
 
 Then load the package in your doc:
 
@@ -14,7 +14,7 @@ Then load the package in your doc:
 library(DT)
 ```
 
-Then you just have to pass a dataframe to the `datatable()`\` function:\
+Then you just have to pass a dataframe to the `datatable()` function:\
 
 ```{r}
 # load the iris dataset
