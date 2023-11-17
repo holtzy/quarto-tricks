@@ -2,23 +2,28 @@
 title: "Figure Caption"
 format: html
 editor: visual
+include-in-header:
+  - text: |
+      <style>
+      figcaption {
+        text-align: center;
+      }
+      </style>
 ---
-
-<style>
-figcaption {
-   text-align: center;
-}
-</style>
-
 
 Let's create a plot with a caption below it:
 
-```{r, fig.align="center", fig.width=6, fig.height=6, fig.cap="Figure: Here is a really important caption.", message=FALSE}
+```{r}
+#| fig-align: center
+#| fig-width: 6
+#| fig-height: 6
+#| fig.cap: "Figure: Here is a really important caption."
+#| message: false
 library(tidyverse)
 
-mpg %>%
-  ggplot( aes(x=reorder(class, hwy), y=hwy, fill=class)) + 
-    geom_boxplot() +
-    xlab("class") +
-    theme(legend.position="none")
+ggplot(mpg) +
+  aes(x = reorder(class, hwy), y = hwy, fill = class)
+  geom_boxplot() +
+  xlab("class") +
+  theme(legend.position = "none")
 ```
