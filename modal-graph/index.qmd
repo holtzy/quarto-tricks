@@ -1,0 +1,31 @@
+---
+title: "Open graph in Fullscreen"
+format: html
+editor: visual
+---
+
+Let's do a chart. But not too big as we don't want to cluter the report.
+
+```{r, warning=FALSE, out.width="300px"}
+library(ggplot2)
+library(palmerpenguins)
+
+scatter_plot <- ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
+    geom_point()
+
+scatter_plot
+```
+
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">See in Full Screen</button>
+
+<div class="modal fade" id="exampleModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered p-8" style="max-width: 90%"><div class="modal-content">
+
+```{r, echo=FALSE, warning=FALSE, out.width="100%"}
+scatter_plot
+```
+
+</div></div></div>
+
+
+
