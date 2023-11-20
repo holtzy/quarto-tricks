@@ -1,0 +1,34 @@
+---
+title: "Plotly in Quarto"
+format: html
+editor: visual
+---
+
+`plotly` is such an amazing package. With the `ggplotly` function you can make your `ggplot` interactive in just 1 line of code!
+
+Check it out:
+
+```{r, message=FALSE, warning=F}
+
+# Libraries
+library(ggplot2)
+library(dplyr)
+library(plotly)
+library(hrbrthemes)
+
+# Load dataset from github
+data <- read.table("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/3_TwoNumOrdered.csv", header=T)
+data$date <- as.Date(data$date)
+
+# Usual area chart
+p <- data %>%
+  ggplot( aes(x=date, y=value)) +
+    geom_area(fill="#69b3a2", alpha=0.5) +
+    geom_line(color="#69b3a2") +
+    ylab("bitcoin price ($)") +
+    theme_ipsum()
+
+# Turn it interactive with ggplotly
+p <- ggplotly(p)
+p
+```
