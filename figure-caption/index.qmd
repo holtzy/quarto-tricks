@@ -4,13 +4,13 @@ format: html
 editor: visual
 ---
 
+```{=html}
 <style>
 figcaption {
    text-align: center;
 }
 </style>
-
-
+```
 Let's create a plot with a caption below it:
 
 ```{r, fig.align="center", fig.width=6, fig.height=6, fig.cap="Figure: Here is a really important caption.", message=FALSE}

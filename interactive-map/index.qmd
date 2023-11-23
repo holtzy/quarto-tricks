@@ -1,0 +1,76 @@
+---
+title: "Interactive map"
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
+editor: visual
+---
+
+```{r}
+library(ggplot2)
+library(ggiraph)
+library(patchwork)
+
+# Example data - replace with your data
+map_data <- data.frame(
+  id = 1:3,
+  lat = c(40, 42, 37),
+  lon = c(-100, -120, -95),
+  group = c("A", "B", "C")
+)
+
+line_data <- data.frame(
+  id = rep(1:3, each = 10),
+  time = rep(seq(as.Date("2021-01-01"), by = "1 month", length.out = 10), 3),
+  value = rnorm(30),
+  group = rep(c("A", "B", "C"), each = 10)
+)
+
+# Map with interactive points
+map_plot <- ggplot() +
+  borders("world", colour = "gray80", fill = "gray90") +  # Add a world map background
+  geom_point_interactive(data = map_data, aes(x = lon, y = lat, size = 5, color=group, tooltip = group, data_id = group)) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  coord_sf(xlim = c(-130, -65), ylim = c(10, 75)) 
+
+
+# Line chart with interactive lines
+line_plot <- ggplot(line_data, aes(x = time, y = value, group = group, color=group)) +
+  geom_line_interactive(aes(data_id = group, tooltip = group))
+
+combined_plot <- girafe(
+  ggobj = map_plot + plot_spacer() + line_plot + plot_layout(widths = c(0.35, 0, 0.65)),
+  options = list(
+    opts_hover(css = ''),
+    opts_hover_inv(css = "opacity:0.1;"), 
+    opts_sizing(rescale = FALSE)
+  ),
+  height_svg = 4,
+  width_svg = 12
+)
+
+```
+
+Let's say you have several samples in your dataset. Each coming from a different location.
+
+You can use `ggiraph` to add a map, and link it with another way to visualize the data.
+
+In the graph below, hover the map to reveal the sample evolution on the line chart!
+
+<br/>
+
+
+```{r}
+combined_plot
+```
+
+<br/>
+
+If you are interested in interactive graphs, check the [R graph gallery!](https://www.r-graph-gallery.com)!
+
+
+
+<br/>
+
