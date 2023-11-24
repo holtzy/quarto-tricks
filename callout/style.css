@@ -1,0 +1,31 @@
+.callout-gradient > div.callout-note.callout-style-default>.callout-header {
+    background-image: linear-gradient(to right, #eed5ee, #8528f0);
+}
+
+.callout-gradient > div.callout-note.callout {
+    border-left-color: #8528f0;
+}
+
+.callout-gradient{
+  animation: shake 4s cubic-bezier(.36,.07,.19,.97) infinite;
+  transform: translate3d(0, 0, 0);
+}
+
+@keyframes shake {
+  2%, 18% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  4%, 16% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  6%, 10%, 14% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  8%, 12% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+

@@ -1,0 +1,55 @@
+---
+title: "Callout"
+format: 
+  html:
+    css: style.css
+editor: visual
+---
+
+Callouts are an excellent way to draw extra attention to certain concepts, or to more clearly indicate that certain content is supplemental or applicable to only some scenarios.
+
+:::{.callout-note}
+Note that there are five types of callouts, including:
+`note`, `tip`, `warning`, `caution`, and `important`.
+:::
+
+:::{.callout-tip}
+This is an example of an tip callout
+:::
+
+:::{.callout-caution}
+This is an example of an caution callout
+:::
+
+:::{.callout-warning}
+This is an example of an warning callout
+:::
+
+:::{.callout-important}
+This is an example of an important callout
+:::
+
+
+
+
+<br/>
+
+--------------------
+
+<br/>
+
+Note that you can also make it a bit more personal using `css`
+
+:::{.callout-gradient}
+:::{.callout-note}
+This is a custom callout. 
+
+Using CSS, you can control pretty much everything.
+
+This div is even shaking every now and then 🙃
+:::
+:::
+
+
+
+
