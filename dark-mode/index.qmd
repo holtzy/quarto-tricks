@@ -1,0 +1,25 @@
+---
+title: "Dark Mode"
+format: html
+editor: visual
+theme:
+  dark: darkly
+  light: flatly
+---
+
+Check the button at the top right of this doc.
+
+It allows to enable / disable dark mode!
+
+However, plots are not automatically moved to dark background! We will see later how this is possible
+
+```{r, message=F, warning=F}
+
+library(tidyverse)
+
+mpg %>%
+  ggplot( aes(x=reorder(class, hwy), y=hwy, fill=class)) + 
+    geom_boxplot() +
+    xlab("class") +
+    theme(legend.position="none")
+```
