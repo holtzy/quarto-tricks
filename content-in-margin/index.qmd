@@ -1,0 +1,37 @@
+---
+title: "Content in Margin"
+format: html
+editor: visual
+---
+
+Let's start by adding some R results in the margin. 
+
+It is possible thanks to the `#| column: margin` chunk option.
+
+
+
+```{r}
+#| column: margin
+
+knitr::kable(
+  mtcars[1:3, 1:3]
+)
+```
+
+Not too bad!
+
+Side notes are a very good way to make your doc shines!
+
+You should use it.
+
+Now, let's add some text / non R generated content in the margin!
+
+Just a random few words:
+
+::: {.column-margin}
+
+Hi! I'm a side note! 🔥
+
+:::
+
+That's pretty much it. You can use markdown, equations, or any other HTML content in it!
