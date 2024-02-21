@@ -1,0 +1,29 @@
+---
+title: "Full width graph"
+format: html
+editor: visual
+---
+
+The following graph is gonna take 100% of the width, not only the text area width.
+
+```{r}
+#| column: screen
+#| out-width: 100%
+#| layout-ncol: 4
+library(patchwork)
+library(ggplot2)
+
+ggplot(mtcars) + geom_point(aes(mpg, disp))
+ggplot(mtcars) + geom_boxplot(aes(gear, disp, group = gear))
+ggplot(mtcars) + geom_smooth(aes(disp, qsec))
+ggplot(mtcars) + geom_bar(aes(carb))
+
+```
+
+
+This is what you need at the beginning of your code chunk:
+
+```
+#| column: screen
+#| out-width: 100%
+```
