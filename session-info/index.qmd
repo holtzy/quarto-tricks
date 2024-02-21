@@ -1,0 +1,31 @@
+---
+title: "Session Info"
+format: html
+editor: visual
+---
+
+At the end of a document, it is a good practive to use the `sessionInfo()` command to list of the packages in use and their version.
+
+But the result is very verbose, and pretty ugly.
+
+I suggest we wrap it in an accordion: it will be available but discrete.
+
+<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" >Session Information</button><div id="collapseOne" class="accordion-collapse collapse"><div>
+
+```{r}
+sessionInfo()
+```
+
+</div></div>
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
