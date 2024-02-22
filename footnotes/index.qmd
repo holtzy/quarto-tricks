@@ -1,0 +1,13 @@
+---
+title: "Footnotes"
+format: html
+editor: visual
+---
+
+It is pretty straigthforward to add footnotes to a Quarto document.
+
+For instance, here is one attached to the word carrot^[The carrot (Daucus carota subsp. sativus) is a root vegetable, typically orange in color]. 
+
+And let's add a second one, about potatoes[^potatoNote]. This time an identifier is created and the footnote content is written below.
+
+[^potatoNote]: The potato /pəˈteɪtoʊ/ is a starchy root vegetable native to the Americas that is consumed as a staple food in many parts of the world.
