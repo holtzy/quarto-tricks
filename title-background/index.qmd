@@ -1,0 +1,28 @@
+---
+title: "A title with a background"
+subtitle: "And a subtitle" 
+format: html
+title-block-banner: "#f0f3f5"
+title-block-banner-color: "black"
+author: 
+  name: "Yan Holtz"
+  affiliation: "Independant 😀"
+  email: yan.holtz.data@gmail.com
+  roles: "made the document"
+keywords: "Quarto"
+date: today
+description: "<br/>This document is just made to show how to customize the document header.<br/>Hopefully it will be useful to you!"
+
+---
+
+<br/><br/><br/><br/>
+
+## Introduction
+
+Then your content goes here
+
+## Graph
+
+```{r}
+plot(1,1)
+```
