@@ -15,7 +15,8 @@ In this case, you can hide code chunks, and display a small button to show them 
 
 Let's do it! The chart for this code is hidden.
 
-```{r warning=FALSE}
+```{r}
+#| warning: false
 library(ggplot2)
 library(palmerpenguins)
 
