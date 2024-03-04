@@ -1,0 +1,27 @@
+---
+title: "Quarto Computations"
+format:
+  html:
+    code-link: true
+---
+
+Don't forget that you need `wml2` and `downlit` packages install. 
+
+Then your function name will become hyper links thanks to the `code-link` option!
+
+```{r}
+# Load the ggplot2 library
+library(ggplot2)
+```
+
+Let's try with a graph
+
+```{r}
+# Create the scatterplot using ggplot2
+ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point() +
+  labs(x = "Weight (1000 lbs)", y = "Miles per Gallon",
+       title = "Scatterplot of MPG vs. Weight") +
+  theme_minimal()
+```
+
