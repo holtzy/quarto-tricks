@@ -5,7 +5,11 @@ css: style.css
 editor: visual
 ---
 
-<br/><br/><br/>
+<br/><br/>
+
+<div class="parallax-container"><div class="parallax-image-container"></div></div>
+
+<br/><br/>
 
 Let's start with some code
 
