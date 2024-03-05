@@ -1,0 +1,54 @@
+---
+title: "A doc with some parallax"
+format: html
+css: style.css
+editor: visual
+---
+
+<br/><br/><br/>
+
+Let's start with some code
+
+```{r, eval=FALSE}
+#| fig-width: 3
+#| fig-height: 3
+
+# Load the ggplot2 package
+library(ggplot2)
+
+# Create a box plot using ggplot2
+ggplot(mtcars, aes(x = factor(cyl), y = mpg)) +
+  geom_boxplot() + # Add box plot
+  labs(x = "Number of Cylinders", y = "Miles per Gallon") + # Label axes
+  ggtitle("Box Plot of MPG ")
+```
+
+
+Parallax is **the observed displacement of an object caused by the change of the observer's point of view**. 
+
+In astronomy, it is an irreplaceable tool for calculating distances of far away stars. Parallax enables astronomers to measure the distances of far away stars by using trigonometry.
+
+<br/><br/>
+
+<div class="parallax-container"><div class="parallax-image-container"></div></div>
+
+<br/><br/>
+
+Parallax scrolling is also a web site trend where the background content (i.e. an image) is moved at a different speed than the foreground content while scrolling.
+
+```{r}
+#| fig-width: 3
+#| fig-height: 3
+
+# Load the ggplot2 package
+library(ggplot2)
+
+# Create a scatterplot using ggplot2
+ggplot(mtcars, aes(x = mpg, y = wt)) +
+  geom_point() + # Add points
+  labs(x = "Miles per Gallon", y = "Weight") + # Label axes
+  ggtitle("Scatterplot of MPG vs. Weight") # Add title
+
+```
+
+Note: this is possible thanks to the attached css style sheet!

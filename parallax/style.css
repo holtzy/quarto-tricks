@@ -1,0 +1,14 @@
+.parallax-container {
+  position: relative;
+}
+
+.parallax-image-container {
+  background-image: url(https://github.com/holtzy/dataviz-inspiration/blob/main/public/misc/overview1.png?raw=true);
+  height: 200px;
+  background-attachment: fixed;
+  opacity: 1;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
