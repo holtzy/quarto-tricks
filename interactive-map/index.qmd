@@ -1,0 +1,32 @@
+---
+title: "Interactive Map in a Quarto doc"
+format: html
+editor: visual
+toc: true
+---
+
+Thanks to the [leaflet package](https://r-graph-gallery.com/package/leaflet.html), it is very straightforward to include an interactive map in a quarto document.
+
+# First map
+
+Let's load `leaflet` and build a very basic map with it to see how it looks like. \
+\
+Note: you need to install the package first with `install.packages()`
+
+```{r}
+#| column: screen
+#| out-width: 100%
+
+# Load the library.
+library(leaflet)
+
+# Make a map
+leaflet() %>%
+  addTiles() %>% # Add default OpenStreetMap map tiles
+  addMarkers(lng = 174.768, lat = -36.852, popup = "The birthplace of R")
+```
+# Pretty sweet
+
+Looks not too bad 🙂.
+
+Check the [R graph gallery](https://r-graph-gallery.com/interactive-charts.html) to learn more about interactive graphs in R!
