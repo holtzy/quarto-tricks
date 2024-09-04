@@ -7,15 +7,11 @@ editor: visual
 toc: true
 ---
 
-Pretty magical.\
-\
 With just one option in the quarto document header, you can link the code written in the report to the official documentation
 
-# Check below
+In the code below, click on a function name!
 
-In the code below, click on a function name to open its documentation!
-
-```{r}
+```{r, message=F, warning=F}
 # Load dplyr package
 library(dplyr)
 

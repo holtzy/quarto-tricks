@@ -1,0 +1,30 @@
+---
+title: "Code annotation"
+format: html
+editor: visual
+toc: true
+code-annotations: hover
+---
+
+Sometimes you want to add some context to your code, without cluttering the code chunk.
+
+This is totally doable. Just add `# <1>` next to the code line to attach an annotation to it, and define the annotation below the code chunk.
+
+In the code below, try to hover over the numbers on the right!
+
+```{r, warning=F, message=F}
+# Load dplyr package
+library(dplyr) # <1>
+
+mtcars_summary <- mtcars %>%
+  filter(cyl == 6) %>% 
+  select(mpg, hp, wt) %>%
+  summarise(
+    avg_mpg = mean(mpg), # <2>
+    avg_hp = mean(hp),# <2>
+    avg_wt = mean(wt)# <2>
+  )
+```
+
+1. `dplyr` is one of the cornerstone of the tidyverse, really useful for data wrangling.
+2. here I'm computing 3 variables, the averages of `mpg`, `hp` and `wt`
