@@ -1,0 +1,38 @@
+---
+title: "Linking code to documentation automatically"
+format: 
+  html:
+    code-link: true
+editor: visual
+toc: true
+---
+
+Pretty magical.\
+\
+With just one option in the quarto document header, you can link the code written in the report to the official documentation
+
+# Check below
+
+In the code below, click on a function name to open its documentation!
+
+```{r}
+# Load dplyr package
+library(dplyr)
+
+# Example: Using dplyr to filter, select, and summarize data
+mtcars_summary <- mtcars %>%
+  # Filter rows where cars have 6 cylinders
+  filter(cyl == 6) %>%
+  # Select only the relevant columns: mpg (miles per gallon), hp (horsepower), and wt (weight)
+  select(mpg, hp, wt) %>%
+  # Create a summary of the average mpg, hp, and wt for these cars
+  summarise(
+    avg_mpg = mean(mpg),
+    avg_hp = mean(hp),
+    avg_wt = mean(wt)
+  )
+```
+
+# More tricks
+
+Check more quarto tricks [here](https://www.productive-r-workflow.com/quarto-tricks)!

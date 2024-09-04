@@ -9,8 +9,7 @@ Thanks to the [leaflet package](https://r-graph-gallery.com/package/leaflet.html
 
 # First map
 
-Let's load `leaflet` and build a very basic map with it to see how it looks like. \
-\
+Let's load `leaflet` and build a very basic map with it to see how it looks like.
 Note: you need to install the package first with `install.packages()`
 
 ```{r}
