@@ -1,41 +1,32 @@
 ---
-title: "Particle JS in the background"
+title: "Some particles"
 format: 
   html:
     template-partials: 
       - title-block.html
 toc: true
-code-tools: true
-code-fold: true
+title-block-banner: true
+subtitle: "A quarto doc with some crazy particles in the header background"
+author: Yan Holtz
+date: "September 2024"
 ---
 
-About Table of Content
+This doc showcases how to use `particle.js` to get a nice header in your quarto document.
 
-It is pretty straightforward!
+let's dive in.
 
-You just need `toc: true` in the header and then to include titles in the document.
+# What is particle.js
 
-# Plot 1
+It's a javascript library that draws stunning particles in a HTML document.
 
-Running Code
+You can check it on [github](https://github.com/VincentGarreau/particles.js/), and play with this [little tool](https://vincentgarreau.com/particles.js/) to find the configuration that is right for you.
 
-When you click the Render button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+# How to use it in Quarto?
 
-```{r}
-plot(1,1)
-```
+It is possible thanks to a "template partials". It's a quarto option that allows to replace the code of a section of the document. 
 
-# Plot 2
+The `title-block` partial can be used to customize the header, and inject some particles in it!
 
-A bit of code
+For more explanation, check the gallery of [Quarto tips and tricks](https://www.productive-r-workflow.com/quarto-tricks)!
 
-```{r}
- #| echo: false
- 2 * 2
-```
 
-Nice one isn't it! 🙃
-
-# Conclustion
-
-Pretty useful!
