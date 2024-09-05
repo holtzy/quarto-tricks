@@ -1,0 +1,41 @@
+---
+title: "Particle JS in the background"
+format: 
+  html:
+    template-partials: 
+      - title-block.html
+toc: true
+code-tools: true
+code-fold: true
+---
+
+About Table of Content
+
+It is pretty straightforward!
+
+You just need `toc: true` in the header and then to include titles in the document.
+
+# Plot 1
+
+Running Code
+
+When you click the Render button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+plot(1,1)
+```
+
+# Plot 2
+
+A bit of code
+
+```{r}
+ #| echo: false
+ 2 * 2
+```
+
+Nice one isn't it! 🙃
+
+# Conclustion
+
+Pretty useful!
