@@ -1,0 +1,35 @@
+---
+title: "Standalone document"
+format: 
+  html:
+    embed-resources: true
+editor: visual
+toc: true
+---
+
+This document has no dependencies at all! Everything is included IN the HTML file.
+
+# Plot 1
+
+Running Code
+
+When you click the Render button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+plot(1,1)
+```
+
+# Plot 2
+
+A bit of code
+
+```{r}
+ #| echo: false
+ 2 * 2
+```
+
+Nice one isn't it! 🙃
+
+# Conclustion
+
+Pretty useful!
