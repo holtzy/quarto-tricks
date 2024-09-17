@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Crypto price analysis: cardano</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="index_files/libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="index_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="index_files/libs/jquery-1.11.1/jquery.min.js"></script>
+<link href="index_files/libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet">
+<script src="index_files/libs/dygraphs-1.1.1/dygraph-combined.js"></script>
+<script src="index_files/libs/dygraphs-1.1.1/shapes.js"></script>
+<script src="index_files/libs/moment-2.8.4/moment.js"></script>
+<script src="index_files/libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
+<script src="index_files/libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
+<script src="index_files/libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#getting-data" id="toc-getting-data" class="nav-link active" data-scroll-target="#getting-data">Getting data</a></li>
+  <li><a href="#cardano-price-evolution" id="toc-cardano-price-evolution" class="nav-link" data-scroll-target="#cardano-price-evolution">cardano price evolution</a></li>
+  <li><a href="#conclustion" id="toc-conclustion" class="nav-link" data-scroll-target="#conclustion">Conclustion</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Crypto price analysis: cardano</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This report is gives some information about the cardano price for the last 2 weeks.</p>
+<p>It is also used to show how parametrized reports in Quarto work.</p>
+<section id="getting-data" class="level1">
+<h1>Getting data</h1>
+<p>The price can be fetched from the coingecko API. Here is the code to do so:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Libraries</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Get today's date and the date 1 year ago</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>end_date <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">as.POSIXct</span>(<span class="fu">Sys.Date</span>()))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>start_date <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">as.POSIXct</span>(<span class="fu">Sys.Date</span>() <span class="sc">-</span> <span class="dv">365</span>))</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Construct the API URL</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://api.coingecko.com/api/v3/coins/"</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  params<span class="sc">$</span>crypto,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"/market_chart/range?vs_currency=usd&amp;from="</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  start_date, <span class="st">"&amp;to="</span>, end_date</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch the data using readLines</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>json_data <span class="ot">&lt;-</span> <span class="fu">readLines</span>(url, <span class="at">warn =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Parse the JSON data</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(json_data)<span class="sc">$</span>prices <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(data) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"timestamp"</span>, <span class="st">"value"</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Format the date (date is provided in millisecond, thus division by 1000)</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>timestamp <span class="ot">&lt;-</span> <span class="fu">date</span>(data<span class="sc">$</span>timestamp <span class="sc">/</span> <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="cardano-price-evolution" class="level1">
+<h1>cardano price evolution</h1>
+<p>Now, let’s make a chart to show the evolution using dygraph:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dygraphs)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dygraph</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="dygraphs html-widget html-fill-item" id="htmlwidget-f2690c46d7e5be413ea4" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-f2690c46d7e5be413ea4">{"x":{"attrs":{"labels":["day","value"],"legend":"auto","retainDateWindow":false,"axes":{"x":{"pixelsPerLabel":60}}},"scale":"daily","annotations":[],"shadings":[],"events":[],"format":"date","data":[["2023-09-17T00:00:00.000Z","2023-09-18T00:00:00.000Z","2023-09-19T00:00:00.000Z","2023-09-20T00:00:00.000Z","2023-09-21T00:00:00.000Z","2023-09-22T00:00:00.000Z","2023-09-23T00:00:00.000Z","2023-09-24T00:00:00.000Z","2023-09-25T00:00:00.000Z","2023-09-26T00:00:00.000Z","2023-09-27T00:00:00.000Z","2023-09-28T00:00:00.000Z","2023-09-29T00:00:00.000Z","2023-09-30T00:00:00.000Z","2023-10-01T00:00:00.000Z","2023-10-02T00:00:00.000Z","2023-10-03T00:00:00.000Z","2023-10-04T00:00:00.000Z","2023-10-05T00:00:00.000Z","2023-10-06T00:00:00.000Z","2023-10-07T00:00:00.000Z","2023-10-08T00:00:00.000Z","2023-10-09T00:00:00.000Z","2023-10-10T00:00:00.000Z","2023-10-11T00:00:00.000Z","2023-10-12T00:00:00.000Z","2023-10-13T00:00:00.000Z","2023-10-14T00:00:00.000Z","2023-10-15T00:00:00.000Z","2023-10-16T00:00:00.000Z","2023-10-17T00:00:00.000Z","2023-10-18T00:00:00.000Z","2023-10-19T00:00:00.000Z","2023-10-20T00:00:00.000Z","2023-10-21T00:00:00.000Z","2023-10-22T00:00:00.000Z","2023-10-23T00:00:00.000Z","2023-10-24T00:00:00.000Z","2023-10-25T00:00:00.000Z","2023-10-26T00:00:00.000Z","2023-10-27T00:00:00.000Z","2023-10-28T00:00:00.000Z","2023-10-29T00:00:00.000Z","2023-10-30T00:00:00.000Z","2023-10-31T00:00:00.000Z","2023-11-01T00:00:00.000Z","2023-11-02T00:00:00.000Z","2023-11-03T00:00:00.000Z","2023-11-04T00:00:00.000Z","2023-11-05T00:00:00.000Z","2023-11-06T00:00:00.000Z","2023-11-07T00:00:00.000Z","2023-11-08T00:00:00.000Z","2023-11-09T00:00:00.000Z","2023-11-10T00:00:00.000Z","2023-11-11T00:00:00.000Z","2023-11-12T00:00:00.000Z","2023-11-13T00:00:00.000Z","2023-11-14T00:00:00.000Z","2023-11-15T00:00:00.000Z","2023-11-16T00:00:00.000Z","2023-11-17T00:00:00.000Z","2023-11-18T00:00:00.000Z","2023-11-19T00:00:00.000Z","2023-11-20T00:00:00.000Z","2023-11-21T00:00:00.000Z","2023-11-22T00:00:00.000Z","2023-11-23T00:00:00.000Z","2023-11-24T00:00:00.000Z","2023-11-25T00:00:00.000Z","2023-11-26T00:00:00.000Z","2023-11-27T00:00:00.000Z","2023-11-28T00:00:00.000Z","2023-11-29T00:00:00.000Z","2023-11-30T00:00:00.000Z","2023-12-01T00:00:00.000Z","2023-12-02T00:00:00.000Z","2023-12-03T00:00:00.000Z","2023-12-04T00:00:00.000Z","2023-12-05T00:00:00.000Z","2023-12-06T00:00:00.000Z","2023-12-07T00:00:00.000Z","2023-12-08T00:00:00.000Z","2023-12-09T00:00:00.000Z","2023-12-10T00:00:00.000Z","2023-12-11T00:00:00.000Z","2023-12-12T00:00:00.000Z","2023-12-13T00:00:00.000Z","2023-12-14T00:00:00.000Z","2023-12-15T00:00:00.000Z","2023-12-16T00:00:00.000Z","2023-12-17T00:00:00.000Z","2023-12-18T00:00:00.000Z","2023-12-19T00:00:00.000Z","2023-12-20T00:00:00.000Z","2023-12-21T00:00:00.000Z","2023-12-22T00:00:00.000Z","2023-12-23T00:00:00.000Z","2023-12-24T00:00:00.000Z","2023-12-25T00:00:00.000Z","2023-12-26T00:00:00.000Z","2023-12-27T00:00:00.000Z","2023-12-28T00:00:00.000Z","2023-12-29T00:00:00.000Z","2023-12-30T00:00:00.000Z","2023-12-31T00:00:00.000Z","2024-01-01T00:00:00.000Z","2024-01-02T00:00:00.000Z","2024-01-03T00:00:00.000Z","2024-01-04T00:00:00.000Z","2024-01-05T00:00:00.000Z","2024-01-06T00:00:00.000Z","2024-01-07T00:00:00.000Z","2024-01-08T00:00:00.000Z","2024-01-09T00:00:00.000Z","2024-01-10T00:00:00.000Z","2024-01-11T00:00:00.000Z","2024-01-12T00:00:00.000Z","2024-01-13T00:00:00.000Z","2024-01-14T00:00:00.000Z","2024-01-15T00:00:00.000Z","2024-01-16T00:00:00.000Z","2024-01-17T00:00:00.000Z","2024-01-18T00:00:00.000Z","2024-01-19T00:00:00.000Z","2024-01-20T00:00:00.000Z","2024-01-21T00:00:00.000Z","2024-01-22T00:00:00.000Z","2024-01-23T00:00:00.000Z","2024-01-24T00:00:00.000Z","2024-01-25T00:00:00.000Z","2024-01-26T00:00:00.000Z","2024-01-27T00:00:00.000Z","2024-01-28T00:00:00.000Z","2024-01-29T00:00:00.000Z","2024-01-30T00:00:00.000Z","2024-01-31T00:00:00.000Z","2024-02-01T00:00:00.000Z","2024-02-02T00:00:00.000Z","2024-02-03T00:00:00.000Z","2024-02-04T00:00:00.000Z","2024-02-05T00:00:00.000Z","2024-02-06T00:00:00.000Z","2024-02-07T00:00:00.000Z","2024-02-08T00:00:00.000Z","2024-02-09T00:00:00.000Z","2024-02-10T00:00:00.000Z","2024-02-11T00:00:00.000Z","2024-02-12T00:00:00.000Z","2024-02-13T00:00:00.000Z","2024-02-14T00:00:00.000Z","2024-02-15T00:00:00.000Z","2024-02-16T00:00:00.000Z","2024-02-17T00:00:00.000Z","2024-02-18T00:00:00.000Z","2024-02-19T00:00:00.000Z","2024-02-20T00:00:00.000Z","2024-02-21T00:00:00.000Z","2024-02-22T00:00:00.000Z","2024-02-23T00:00:00.000Z","2024-02-24T00:00:00.000Z","2024-02-25T00:00:00.000Z","2024-02-26T00:00:00.000Z","2024-02-27T00:00:00.000Z","2024-02-28T00:00:00.000Z","2024-02-29T00:00:00.000Z","2024-03-01T00:00:00.000Z","2024-03-02T00:00:00.000Z","2024-03-03T00:00:00.000Z","2024-03-04T00:00:00.000Z","2024-03-05T00:00:00.000Z","2024-03-06T00:00:00.000Z","2024-03-07T00:00:00.000Z","2024-03-08T00:00:00.000Z","2024-03-09T00:00:00.000Z","2024-03-10T00:00:00.000Z","2024-03-11T00:00:00.000Z","2024-03-12T00:00:00.000Z","2024-03-13T00:00:00.000Z","2024-03-14T00:00:00.000Z","2024-03-15T00:00:00.000Z","2024-03-16T00:00:00.000Z","2024-03-17T00:00:00.000Z","2024-03-18T00:00:00.000Z","2024-03-19T00:00:00.000Z","2024-03-20T00:00:00.000Z","2024-03-21T00:00:00.000Z","2024-03-22T00:00:00.000Z","2024-03-23T00:00:00.000Z","2024-03-24T00:00:00.000Z","2024-03-25T00:00:00.000Z","2024-03-26T00:00:00.000Z","2024-03-27T00:00:00.000Z","2024-03-28T00:00:00.000Z","2024-03-29T00:00:00.000Z","2024-03-30T00:00:00.000Z","2024-03-31T00:00:00.000Z","2024-04-01T00:00:00.000Z","2024-04-02T00:00:00.000Z","2024-04-03T00:00:00.000Z","2024-04-04T00:00:00.000Z","2024-04-05T00:00:00.000Z","2024-04-06T00:00:00.000Z","2024-04-07T00:00:00.000Z","2024-04-08T00:00:00.000Z","2024-04-09T00:00:00.000Z","2024-04-10T00:00:00.000Z","2024-04-11T00:00:00.000Z","2024-04-12T00:00:00.000Z","2024-04-13T00:00:00.000Z","2024-04-14T00:00:00.000Z","2024-04-15T00:00:00.000Z","2024-04-16T00:00:00.000Z","2024-04-17T00:00:00.000Z","2024-04-18T00:00:00.000Z","2024-04-19T00:00:00.000Z","2024-04-20T00:00:00.000Z","2024-04-21T00:00:00.000Z","2024-04-22T00:00:00.000Z","2024-04-23T00:00:00.000Z","2024-04-24T00:00:00.000Z","2024-04-25T00:00:00.000Z","2024-04-26T00:00:00.000Z","2024-04-27T00:00:00.000Z","2024-04-28T00:00:00.000Z","2024-04-29T00:00:00.000Z","2024-04-30T00:00:00.000Z","2024-05-01T00:00:00.000Z","2024-05-02T00:00:00.000Z","2024-05-03T00:00:00.000Z","2024-05-04T00:00:00.000Z","2024-05-05T00:00:00.000Z","2024-05-06T00:00:00.000Z","2024-05-07T00:00:00.000Z","2024-05-08T00:00:00.000Z","2024-05-09T00:00:00.000Z","2024-05-10T00:00:00.000Z","2024-05-11T00:00:00.000Z","2024-05-12T00:00:00.000Z","2024-05-13T00:00:00.000Z","2024-05-14T00:00:00.000Z","2024-05-15T00:00:00.000Z","2024-05-16T00:00:00.000Z","2024-05-17T00:00:00.000Z","2024-05-18T00:00:00.000Z","2024-05-19T00:00:00.000Z","2024-05-20T00:00:00.000Z","2024-05-21T00:00:00.000Z","2024-05-22T00:00:00.000Z","2024-05-23T00:00:00.000Z","2024-05-24T00:00:00.000Z","2024-05-25T00:00:00.000Z","2024-05-26T00:00:00.000Z","2024-05-27T00:00:00.000Z","2024-05-28T00:00:00.000Z","2024-05-29T00:00:00.000Z","2024-05-30T00:00:00.000Z","2024-05-31T00:00:00.000Z","2024-06-01T00:00:00.000Z","2024-06-02T00:00:00.000Z","2024-06-03T00:00:00.000Z","2024-06-04T00:00:00.000Z","2024-06-05T00:00:00.000Z","2024-06-06T00:00:00.000Z","2024-06-07T00:00:00.000Z","2024-06-08T00:00:00.000Z","2024-06-09T00:00:00.000Z","2024-06-10T00:00:00.000Z","2024-06-11T00:00:00.000Z","2024-06-12T00:00:00.000Z","2024-06-13T00:00:00.000Z","2024-06-14T00:00:00.000Z","2024-06-15T00:00:00.000Z","2024-06-16T00:00:00.000Z","2024-06-17T00:00:00.000Z","2024-06-18T00:00:00.000Z","2024-06-19T00:00:00.000Z","2024-06-20T00:00:00.000Z","2024-06-21T00:00:00.000Z","2024-06-22T00:00:00.000Z","2024-06-23T00:00:00.000Z","2024-06-24T00:00:00.000Z","2024-06-25T00:00:00.000Z","2024-06-26T00:00:00.000Z","2024-06-27T00:00:00.000Z","2024-06-28T00:00:00.000Z","2024-06-29T00:00:00.000Z","2024-06-30T00:00:00.000Z","2024-07-01T00:00:00.000Z","2024-07-02T00:00:00.000Z","2024-07-03T00:00:00.000Z","2024-07-04T00:00:00.000Z","2024-07-05T00:00:00.000Z","2024-07-06T00:00:00.000Z","2024-07-07T00:00:00.000Z","2024-07-08T00:00:00.000Z","2024-07-09T00:00:00.000Z","2024-07-10T00:00:00.000Z","2024-07-11T00:00:00.000Z","2024-07-12T00:00:00.000Z","2024-07-13T00:00:00.000Z","2024-07-14T00:00:00.000Z","2024-07-15T00:00:00.000Z","2024-07-16T00:00:00.000Z","2024-07-17T00:00:00.000Z","2024-07-18T00:00:00.000Z","2024-07-19T00:00:00.000Z","2024-07-20T00:00:00.000Z","2024-07-21T00:00:00.000Z","2024-07-22T00:00:00.000Z","2024-07-23T00:00:00.000Z","2024-07-24T00:00:00.000Z","2024-07-25T00:00:00.000Z","2024-07-26T00:00:00.000Z","2024-07-27T00:00:00.000Z","2024-07-28T00:00:00.000Z","2024-07-29T00:00:00.000Z","2024-07-30T00:00:00.000Z","2024-07-31T00:00:00.000Z","2024-08-01T00:00:00.000Z","2024-08-02T00:00:00.000Z","2024-08-03T00:00:00.000Z","2024-08-04T00:00:00.000Z","2024-08-05T00:00:00.000Z","2024-08-06T00:00:00.000Z","2024-08-07T00:00:00.000Z","2024-08-08T00:00:00.000Z","2024-08-09T00:00:00.000Z","2024-08-10T00:00:00.000Z","2024-08-11T00:00:00.000Z","2024-08-12T00:00:00.000Z","2024-08-13T00:00:00.000Z","2024-08-14T00:00:00.000Z","2024-08-15T00:00:00.000Z","2024-08-16T00:00:00.000Z","2024-08-17T00:00:00.000Z","2024-08-18T00:00:00.000Z","2024-08-19T00:00:00.000Z","2024-08-20T00:00:00.000Z","2024-08-21T00:00:00.000Z","2024-08-22T00:00:00.000Z","2024-08-23T00:00:00.000Z","2024-08-24T00:00:00.000Z","2024-08-25T00:00:00.000Z","2024-08-26T00:00:00.000Z","2024-08-27T00:00:00.000Z","2024-08-28T00:00:00.000Z","2024-08-29T00:00:00.000Z","2024-08-30T00:00:00.000Z","2024-08-31T00:00:00.000Z","2024-09-01T00:00:00.000Z","2024-09-02T00:00:00.000Z","2024-09-03T00:00:00.000Z","2024-09-04T00:00:00.000Z","2024-09-05T00:00:00.000Z","2024-09-06T00:00:00.000Z","2024-09-07T00:00:00.000Z","2024-09-08T00:00:00.000Z","2024-09-09T00:00:00.000Z","2024-09-10T00:00:00.000Z","2024-09-11T00:00:00.000Z","2024-09-12T00:00:00.000Z","2024-09-13T00:00:00.000Z","2024-09-14T00:00:00.000Z","2024-09-15T00:00:00.000Z","2024-09-16T00:00:00.000Z"],[0.2502976543511085,0.2470885090881058,0.2515227543810409,0.2549926803619234,0.251368081858014,0.2451001373012622,0.2448952813321147,0.2459745997053555,0.2425572906861603,0.2458759094320171,0.2453123824223377,0.2447633132473477,0.2488820718704877,0.2494210901271445,0.2537925002873487,0.265891137170391,0.259716498079392,0.2610260099053381,0.2594108249769498,0.2602043419428259,0.2649049662485705,0.2587231276205735,0.2565033811426986,0.2515882831139388,0.2490328901723683,0.2477838236007835,0.2456586247321861,0.2458240163898205,0.2469902141191304,0.2471491660034295,0.2513067050118741,0.2464931401119742,0.2429640674793083,0.2469491934232261,0.2511209532626735,0.2584817308600603,0.2640122180000616,0.2788865832767842,0.2788963796593878,0.280325056790012,0.2874746386555463,0.289344216919849,0.2907998673837716,0.2951022329426886,0.3028112205756921,0.2932473518462861,0.3075456469105733,0.3233084900729669,0.3290640985200862,0.328024157052541,0.3431925755105472,0.3633362143436678,0.3512046212169443,0.3584859312953708,0.3682441373296721,0.3863068029474666,0.3848682677349981,0.3831472116871809,0.3587682056628104,0.3577068569067702,0.3789594362327484,0.370515074814481,0.3657206588373556,0.3776104277944783,0.3839761391361936,0.3795802827444943,0.3585869854341832,0.3803192106632693,0.3861380267348349,0.3861906750115602,0.3945790037915447,0.387873025365517,0.37839467914047,0.3854540790076171,0.3813440854215447,0.3756346694265104,0.3841345948407982,0.3980544170749391,0.3946587984344846,0.4068705909369045,0.4255249059737904,0.4420893756330858,0.4558729709092601,0.5474035170649149,0.5790191961638709,0.5955252513479339,0.5503522027851744,0.5762622487496744,0.6613892286453705,0.6424514040505339,0.6020396774940284,0.6064994776423223,0.580529648296934,0.6008709727534548,0.5750008478278528,0.5897207331143677,0.6363095815171818,0.6236175706204236,0.6148032468668216,0.5930897407349875,0.6257644971286507,0.6079167108264765,0.6329349656134101,0.6176819513470601,0.6083868654372805,0.6023831951139077,0.5932116677600944,0.623256101436692,0.6060852609787025,0.556842720162059,0.5695463363891113,0.5393707483904063,0.5226179816319002,0.4926611410057146,0.5405817266765055,0.510767880375113,0.567929294391895,0.5811386539221115,0.5474745911780851,0.5495600380376037,0.5253876070255283,0.5284594521791264,0.535446290453216,0.5265727839341486,0.5018280724933721,0.5015555780282297,0.5142145110223477,0.5035925858990076,0.4772380109659874,0.4770653869742731,0.476850907946624,0.4666944281737374,0.4846114472370051,0.4862832122785024,0.489756524331142,0.5254688082222182,0.5147458836162068,0.497789409814157,0.5054817418827323,0.5141625358932159,0.5123374566279294,0.4949022925699801,0.4933681022068834,0.498441333850525,0.5016766610371062,0.5285400987966482,0.5407895528441048,0.550691853953995,0.5407701438792356,0.5601792735971755,0.5455257820468045,0.5763509300308692,0.6079150262037338,0.5986118359560745,0.6084093090840645,0.6191363787551806,0.6311288361257484,0.6223752038315511,0.5989716417855219,0.5870301423459386,0.5842533001319432,0.5963385611377838,0.5919576755178287,0.6185476984822272,0.6241652788950875,0.6314079487062091,0.6564418023911469,0.7149619267973372,0.7417755124257798,0.7276491507472452,0.7722695346369098,0.6972076134960586,0.7336259370506201,0.744449593191725,0.7247375305870432,0.7449746080676288,0.7160578860375334,0.7749753173328475,0.7481917133085468,0.7639288624018844,0.750550098481413,0.7270113979441996,0.6582371256229309,0.6817720909945488,0.6623281909079127,0.586019350902608,0.6391399616378111,0.6327763463799453,0.6123037796803994,0.626207258573385,0.6460247903982396,0.656199944873147,0.6653790384572502,0.6481572867334939,0.650176399951593,0.6642438985254749,0.6444865397214639,0.650449791081512,0.6222400848463132,0.5803721745636556,0.5717466267422849,0.5824651813735257,0.5756851059798307,0.58375664703524,0.5889143734956137,0.6139464835843659,0.592220359906436,0.5857210197068813,0.5861803169343673,0.5045343784889652,0.4490279512162241,0.4687265109427785,0.4603126182998896,0.4583592084919298,0.4445898969863973,0.4578276522744481,0.4699167090223507,0.5047835543618832,0.4991004401706118,0.5163694474106608,0.5004444916938912,0.4748989595842877,0.4705788306234401,0.4624344942322544,0.4678102979290452,0.4599420967187839,0.4570763614193257,0.4409541499307044,0.4495508839576058,0.4581538057552922,0.4671149377141021,0.463075749899171,0.4580592575235479,0.4541690938933543,0.4417192327446154,0.4533687042628684,0.4636991732956036,0.4484372298909099,0.4385723944343846,0.437780925754015,0.4362227627821298,0.4278948144924812,0.4528648884383967,0.4595820487995647,0.4817357379294362,0.4820458777066045,0.467454095584356,0.5017230897439796,0.4947219287360987,0.4832018944763229,0.4653427506789767,0.459628260269742,0.4619779530146571,0.4583044909105262,0.4679579408262285,0.4568262495359747,0.450738740656646,0.4463402019849953,0.4475355892235874,0.4498698121514758,0.4463838847003557,0.4568053043504163,0.4614157684623749,0.4616784362804705,0.4581490300594973,0.4494969073060348,0.4367107350374623,0.444217359975159,0.4410018880718442,0.4218316928344483,0.4376222024177547,0.4207464437687136,0.4115422714627497,0.4137189782832436,0.4161881173900786,0.4016365041157662,0.3837158471850039,0.3832895500930921,0.383980948194368,0.3759116176278541,0.3846923753596045,0.3797214455498969,0.3777483211044308,0.3918841224577775,0.3846148709481312,0.3905384978339942,0.3851756679794081,0.3832573764971923,0.3920398166651658,0.4027573638114481,0.4174072422349273,0.4065298340200947,0.3631609597452494,0.3498410691703377,0.3710080919850898,0.3459102447313326,0.3688631610584225,0.3752812713802544,0.3889155811255282,0.3957454045882451,0.4160854215752561,0.4407486638406009,0.4326119985772805,0.445662358355972,0.4382210455104808,0.4368243738171115,0.4239264776922808,0.4386940603749627,0.4378613650729356,0.4464361689044055,0.4263971956952668,0.4102841302793787,0.4066752108033864,0.394633994425812,0.4176110897934974,0.4185181904594663,0.4074332128010827,0.4039064348172,0.4014842042781159,0.3887138757692571,0.3922628731806598,0.3639821743183627,0.3640012189746031,0.3434396398801745,0.3140857405185116,0.3302629115550006,0.3237841187601061,0.3520044439563028,0.3480402106166277,0.3457525563731599,0.3281397120562669,0.3388740535248943,0.3403167944004223,0.3352510404441318,0.3253933423536698,0.3298667419831867,0.3367647480219364,0.3342293557488534,0.336906427537455,0.3435596235608906,0.3690813993917752,0.3765258215538865,0.3908032932645187,0.3945505635201381,0.3844660979829369,0.366819648548151,0.3501193908184426,0.3501971738999551,0.356182977635443,0.3472371333494437,0.3451418483757914,0.331915609644211,0.3356235105661752,0.3187749352593031,0.3232053098506349,0.3252341962767523,0.3147467884066603,0.3248817959292585,0.3382277693887744,0.3434145618661975,0.3435572966999336,0.3528157914512312,0.3562004255542985,0.3609103971852186,0.3543867937736658,0.3387622295912887]]},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="conclustion" class="level1">
+<h1>Conclustion</h1>
+<p>Read more about parametrized reporting in Quarto here.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

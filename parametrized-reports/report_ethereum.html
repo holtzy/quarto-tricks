@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Crypto price analysis: ethereum</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="index_files/libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="index_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="index_files/libs/jquery-1.11.1/jquery.min.js"></script>
+<link href="index_files/libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet">
+<script src="index_files/libs/dygraphs-1.1.1/dygraph-combined.js"></script>
+<script src="index_files/libs/dygraphs-1.1.1/shapes.js"></script>
+<script src="index_files/libs/moment-2.8.4/moment.js"></script>
+<script src="index_files/libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
+<script src="index_files/libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
+<script src="index_files/libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#getting-data" id="toc-getting-data" class="nav-link active" data-scroll-target="#getting-data">Getting data</a></li>
+  <li><a href="#ethereum-price-evolution" id="toc-ethereum-price-evolution" class="nav-link" data-scroll-target="#ethereum-price-evolution">ethereum price evolution</a></li>
+  <li><a href="#conclustion" id="toc-conclustion" class="nav-link" data-scroll-target="#conclustion">Conclustion</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Crypto price analysis: ethereum</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This report is gives some information about the ethereum price for the last 2 weeks.</p>
+<p>It is also used to show how parametrized reports in Quarto work.</p>
+<section id="getting-data" class="level1">
+<h1>Getting data</h1>
+<p>The price can be fetched from the coingecko API. Here is the code to do so:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Libraries</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Get today's date and the date 1 year ago</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>end_date <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">as.POSIXct</span>(<span class="fu">Sys.Date</span>()))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>start_date <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">as.POSIXct</span>(<span class="fu">Sys.Date</span>() <span class="sc">-</span> <span class="dv">365</span>))</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Construct the API URL</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://api.coingecko.com/api/v3/coins/"</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  params<span class="sc">$</span>crypto,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"/market_chart/range?vs_currency=usd&amp;from="</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  start_date, <span class="st">"&amp;to="</span>, end_date</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch the data using readLines</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>json_data <span class="ot">&lt;-</span> <span class="fu">readLines</span>(url, <span class="at">warn =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Parse the JSON data</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(json_data)<span class="sc">$</span>prices <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(data) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"timestamp"</span>, <span class="st">"value"</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Format the date (date is provided in millisecond, thus division by 1000)</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>timestamp <span class="ot">&lt;-</span> <span class="fu">date</span>(data<span class="sc">$</span>timestamp <span class="sc">/</span> <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="ethereum-price-evolution" class="level1">
+<h1>ethereum price evolution</h1>
+<p>Now, let’s make a chart to show the evolution using dygraph:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dygraphs)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dygraph</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="dygraphs html-widget html-fill-item" id="htmlwidget-faa2ff4ab3b0d498ad83" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-faa2ff4ab3b0d498ad83">{"x":{"attrs":{"labels":["day","value"],"legend":"auto","retainDateWindow":false,"axes":{"x":{"pixelsPerLabel":60}}},"scale":"daily","annotations":[],"shadings":[],"events":[],"format":"date","data":[["2023-09-17T00:00:00.000Z","2023-09-18T00:00:00.000Z","2023-09-19T00:00:00.000Z","2023-09-20T00:00:00.000Z","2023-09-21T00:00:00.000Z","2023-09-22T00:00:00.000Z","2023-09-23T00:00:00.000Z","2023-09-24T00:00:00.000Z","2023-09-25T00:00:00.000Z","2023-09-26T00:00:00.000Z","2023-09-27T00:00:00.000Z","2023-09-28T00:00:00.000Z","2023-09-29T00:00:00.000Z","2023-09-30T00:00:00.000Z","2023-10-01T00:00:00.000Z","2023-10-02T00:00:00.000Z","2023-10-03T00:00:00.000Z","2023-10-04T00:00:00.000Z","2023-10-05T00:00:00.000Z","2023-10-06T00:00:00.000Z","2023-10-07T00:00:00.000Z","2023-10-08T00:00:00.000Z","2023-10-09T00:00:00.000Z","2023-10-10T00:00:00.000Z","2023-10-11T00:00:00.000Z","2023-10-12T00:00:00.000Z","2023-10-13T00:00:00.000Z","2023-10-14T00:00:00.000Z","2023-10-15T00:00:00.000Z","2023-10-16T00:00:00.000Z","2023-10-17T00:00:00.000Z","2023-10-18T00:00:00.000Z","2023-10-19T00:00:00.000Z","2023-10-20T00:00:00.000Z","2023-10-21T00:00:00.000Z","2023-10-22T00:00:00.000Z","2023-10-23T00:00:00.000Z","2023-10-24T00:00:00.000Z","2023-10-25T00:00:00.000Z","2023-10-26T00:00:00.000Z","2023-10-27T00:00:00.000Z","2023-10-28T00:00:00.000Z","2023-10-29T00:00:00.000Z","2023-10-30T00:00:00.000Z","2023-10-31T00:00:00.000Z","2023-11-01T00:00:00.000Z","2023-11-02T00:00:00.000Z","2023-11-03T00:00:00.000Z","2023-11-04T00:00:00.000Z","2023-11-05T00:00:00.000Z","2023-11-06T00:00:00.000Z","2023-11-07T00:00:00.000Z","2023-11-08T00:00:00.000Z","2023-11-09T00:00:00.000Z","2023-11-10T00:00:00.000Z","2023-11-11T00:00:00.000Z","2023-11-12T00:00:00.000Z","2023-11-13T00:00:00.000Z","2023-11-14T00:00:00.000Z","2023-11-15T00:00:00.000Z","2023-11-16T00:00:00.000Z","2023-11-17T00:00:00.000Z","2023-11-18T00:00:00.000Z","2023-11-19T00:00:00.000Z","2023-11-20T00:00:00.000Z","2023-11-21T00:00:00.000Z","2023-11-22T00:00:00.000Z","2023-11-23T00:00:00.000Z","2023-11-24T00:00:00.000Z","2023-11-25T00:00:00.000Z","2023-11-26T00:00:00.000Z","2023-11-27T00:00:00.000Z","2023-11-28T00:00:00.000Z","2023-11-29T00:00:00.000Z","2023-11-30T00:00:00.000Z","2023-12-01T00:00:00.000Z","2023-12-02T00:00:00.000Z","2023-12-03T00:00:00.000Z","2023-12-04T00:00:00.000Z","2023-12-05T00:00:00.000Z","2023-12-06T00:00:00.000Z","2023-12-07T00:00:00.000Z","2023-12-08T00:00:00.000Z","2023-12-09T00:00:00.000Z","2023-12-10T00:00:00.000Z","2023-12-11T00:00:00.000Z","2023-12-12T00:00:00.000Z","2023-12-13T00:00:00.000Z","2023-12-14T00:00:00.000Z","2023-12-15T00:00:00.000Z","2023-12-16T00:00:00.000Z","2023-12-17T00:00:00.000Z","2023-12-18T00:00:00.000Z","2023-12-19T00:00:00.000Z","2023-12-20T00:00:00.000Z","2023-12-21T00:00:00.000Z","2023-12-22T00:00:00.000Z","2023-12-23T00:00:00.000Z","2023-12-24T00:00:00.000Z","2023-12-25T00:00:00.000Z","2023-12-26T00:00:00.000Z","2023-12-27T00:00:00.000Z","2023-12-28T00:00:00.000Z","2023-12-29T00:00:00.000Z","2023-12-30T00:00:00.000Z","2023-12-31T00:00:00.000Z","2024-01-01T00:00:00.000Z","2024-01-02T00:00:00.000Z","2024-01-03T00:00:00.000Z","2024-01-04T00:00:00.000Z","2024-01-05T00:00:00.000Z","2024-01-06T00:00:00.000Z","2024-01-07T00:00:00.000Z","2024-01-08T00:00:00.000Z","2024-01-09T00:00:00.000Z","2024-01-10T00:00:00.000Z","2024-01-11T00:00:00.000Z","2024-01-12T00:00:00.000Z","2024-01-13T00:00:00.000Z","2024-01-14T00:00:00.000Z","2024-01-15T00:00:00.000Z","2024-01-16T00:00:00.000Z","2024-01-17T00:00:00.000Z","2024-01-18T00:00:00.000Z","2024-01-19T00:00:00.000Z","2024-01-20T00:00:00.000Z","2024-01-21T00:00:00.000Z","2024-01-22T00:00:00.000Z","2024-01-23T00:00:00.000Z","2024-01-24T00:00:00.000Z","2024-01-25T00:00:00.000Z","2024-01-26T00:00:00.000Z","2024-01-27T00:00:00.000Z","2024-01-28T00:00:00.000Z","2024-01-29T00:00:00.000Z","2024-01-30T00:00:00.000Z","2024-01-31T00:00:00.000Z","2024-02-01T00:00:00.000Z","2024-02-02T00:00:00.000Z","2024-02-03T00:00:00.000Z","2024-02-04T00:00:00.000Z","2024-02-05T00:00:00.000Z","2024-02-06T00:00:00.000Z","2024-02-07T00:00:00.000Z","2024-02-08T00:00:00.000Z","2024-02-09T00:00:00.000Z","2024-02-10T00:00:00.000Z","2024-02-11T00:00:00.000Z","2024-02-12T00:00:00.000Z","2024-02-13T00:00:00.000Z","2024-02-14T00:00:00.000Z","2024-02-15T00:00:00.000Z","2024-02-16T00:00:00.000Z","2024-02-17T00:00:00.000Z","2024-02-18T00:00:00.000Z","2024-02-19T00:00:00.000Z","2024-02-20T00:00:00.000Z","2024-02-21T00:00:00.000Z","2024-02-22T00:00:00.000Z","2024-02-23T00:00:00.000Z","2024-02-24T00:00:00.000Z","2024-02-25T00:00:00.000Z","2024-02-26T00:00:00.000Z","2024-02-27T00:00:00.000Z","2024-02-28T00:00:00.000Z","2024-02-29T00:00:00.000Z","2024-03-01T00:00:00.000Z","2024-03-02T00:00:00.000Z","2024-03-03T00:00:00.000Z","2024-03-04T00:00:00.000Z","2024-03-05T00:00:00.000Z","2024-03-06T00:00:00.000Z","2024-03-07T00:00:00.000Z","2024-03-08T00:00:00.000Z","2024-03-09T00:00:00.000Z","2024-03-10T00:00:00.000Z","2024-03-11T00:00:00.000Z","2024-03-12T00:00:00.000Z","2024-03-13T00:00:00.000Z","2024-03-14T00:00:00.000Z","2024-03-15T00:00:00.000Z","2024-03-16T00:00:00.000Z","2024-03-17T00:00:00.000Z","2024-03-18T00:00:00.000Z","2024-03-19T00:00:00.000Z","2024-03-20T00:00:00.000Z","2024-03-21T00:00:00.000Z","2024-03-22T00:00:00.000Z","2024-03-23T00:00:00.000Z","2024-03-24T00:00:00.000Z","2024-03-25T00:00:00.000Z","2024-03-26T00:00:00.000Z","2024-03-27T00:00:00.000Z","2024-03-28T00:00:00.000Z","2024-03-29T00:00:00.000Z","2024-03-30T00:00:00.000Z","2024-03-31T00:00:00.000Z","2024-04-01T00:00:00.000Z","2024-04-02T00:00:00.000Z","2024-04-03T00:00:00.000Z","2024-04-04T00:00:00.000Z","2024-04-05T00:00:00.000Z","2024-04-06T00:00:00.000Z","2024-04-07T00:00:00.000Z","2024-04-08T00:00:00.000Z","2024-04-09T00:00:00.000Z","2024-04-10T00:00:00.000Z","2024-04-11T00:00:00.000Z","2024-04-12T00:00:00.000Z","2024-04-13T00:00:00.000Z","2024-04-14T00:00:00.000Z","2024-04-15T00:00:00.000Z","2024-04-16T00:00:00.000Z","2024-04-17T00:00:00.000Z","2024-04-18T00:00:00.000Z","2024-04-19T00:00:00.000Z","2024-04-20T00:00:00.000Z","2024-04-21T00:00:00.000Z","2024-04-22T00:00:00.000Z","2024-04-23T00:00:00.000Z","2024-04-24T00:00:00.000Z","2024-04-25T00:00:00.000Z","2024-04-26T00:00:00.000Z","2024-04-27T00:00:00.000Z","2024-04-28T00:00:00.000Z","2024-04-29T00:00:00.000Z","2024-04-30T00:00:00.000Z","2024-05-01T00:00:00.000Z","2024-05-02T00:00:00.000Z","2024-05-03T00:00:00.000Z","2024-05-04T00:00:00.000Z","2024-05-05T00:00:00.000Z","2024-05-06T00:00:00.000Z","2024-05-07T00:00:00.000Z","2024-05-08T00:00:00.000Z","2024-05-09T00:00:00.000Z","2024-05-10T00:00:00.000Z","2024-05-11T00:00:00.000Z","2024-05-12T00:00:00.000Z","2024-05-13T00:00:00.000Z","2024-05-14T00:00:00.000Z","2024-05-15T00:00:00.000Z","2024-05-16T00:00:00.000Z","2024-05-17T00:00:00.000Z","2024-05-18T00:00:00.000Z","2024-05-19T00:00:00.000Z","2024-05-20T00:00:00.000Z","2024-05-21T00:00:00.000Z","2024-05-22T00:00:00.000Z","2024-05-23T00:00:00.000Z","2024-05-24T00:00:00.000Z","2024-05-25T00:00:00.000Z","2024-05-26T00:00:00.000Z","2024-05-27T00:00:00.000Z","2024-05-28T00:00:00.000Z","2024-05-29T00:00:00.000Z","2024-05-30T00:00:00.000Z","2024-05-31T00:00:00.000Z","2024-06-01T00:00:00.000Z","2024-06-02T00:00:00.000Z","2024-06-03T00:00:00.000Z","2024-06-04T00:00:00.000Z","2024-06-05T00:00:00.000Z","2024-06-06T00:00:00.000Z","2024-06-07T00:00:00.000Z","2024-06-08T00:00:00.000Z","2024-06-09T00:00:00.000Z","2024-06-10T00:00:00.000Z","2024-06-11T00:00:00.000Z","2024-06-12T00:00:00.000Z","2024-06-13T00:00:00.000Z","2024-06-14T00:00:00.000Z","2024-06-15T00:00:00.000Z","2024-06-16T00:00:00.000Z","2024-06-17T00:00:00.000Z","2024-06-18T00:00:00.000Z","2024-06-19T00:00:00.000Z","2024-06-20T00:00:00.000Z","2024-06-21T00:00:00.000Z","2024-06-22T00:00:00.000Z","2024-06-23T00:00:00.000Z","2024-06-24T00:00:00.000Z","2024-06-25T00:00:00.000Z","2024-06-26T00:00:00.000Z","2024-06-27T00:00:00.000Z","2024-06-28T00:00:00.000Z","2024-06-29T00:00:00.000Z","2024-06-30T00:00:00.000Z","2024-07-01T00:00:00.000Z","2024-07-02T00:00:00.000Z","2024-07-03T00:00:00.000Z","2024-07-04T00:00:00.000Z","2024-07-05T00:00:00.000Z","2024-07-06T00:00:00.000Z","2024-07-07T00:00:00.000Z","2024-07-08T00:00:00.000Z","2024-07-09T00:00:00.000Z","2024-07-10T00:00:00.000Z","2024-07-11T00:00:00.000Z","2024-07-12T00:00:00.000Z","2024-07-13T00:00:00.000Z","2024-07-14T00:00:00.000Z","2024-07-15T00:00:00.000Z","2024-07-16T00:00:00.000Z","2024-07-17T00:00:00.000Z","2024-07-18T00:00:00.000Z","2024-07-19T00:00:00.000Z","2024-07-20T00:00:00.000Z","2024-07-21T00:00:00.000Z","2024-07-22T00:00:00.000Z","2024-07-23T00:00:00.000Z","2024-07-24T00:00:00.000Z","2024-07-25T00:00:00.000Z","2024-07-26T00:00:00.000Z","2024-07-27T00:00:00.000Z","2024-07-28T00:00:00.000Z","2024-07-29T00:00:00.000Z","2024-07-30T00:00:00.000Z","2024-07-31T00:00:00.000Z","2024-08-01T00:00:00.000Z","2024-08-02T00:00:00.000Z","2024-08-03T00:00:00.000Z","2024-08-04T00:00:00.000Z","2024-08-05T00:00:00.000Z","2024-08-06T00:00:00.000Z","2024-08-07T00:00:00.000Z","2024-08-08T00:00:00.000Z","2024-08-09T00:00:00.000Z","2024-08-10T00:00:00.000Z","2024-08-11T00:00:00.000Z","2024-08-12T00:00:00.000Z","2024-08-13T00:00:00.000Z","2024-08-14T00:00:00.000Z","2024-08-15T00:00:00.000Z","2024-08-16T00:00:00.000Z","2024-08-17T00:00:00.000Z","2024-08-18T00:00:00.000Z","2024-08-19T00:00:00.000Z","2024-08-20T00:00:00.000Z","2024-08-21T00:00:00.000Z","2024-08-22T00:00:00.000Z","2024-08-23T00:00:00.000Z","2024-08-24T00:00:00.000Z","2024-08-25T00:00:00.000Z","2024-08-26T00:00:00.000Z","2024-08-27T00:00:00.000Z","2024-08-28T00:00:00.000Z","2024-08-29T00:00:00.000Z","2024-08-30T00:00:00.000Z","2024-08-31T00:00:00.000Z","2024-09-01T00:00:00.000Z","2024-09-02T00:00:00.000Z","2024-09-03T00:00:00.000Z","2024-09-04T00:00:00.000Z","2024-09-05T00:00:00.000Z","2024-09-06T00:00:00.000Z","2024-09-07T00:00:00.000Z","2024-09-08T00:00:00.000Z","2024-09-09T00:00:00.000Z","2024-09-10T00:00:00.000Z","2024-09-11T00:00:00.000Z","2024-09-12T00:00:00.000Z","2024-09-13T00:00:00.000Z","2024-09-14T00:00:00.000Z","2024-09-15T00:00:00.000Z","2024-09-16T00:00:00.000Z"],[1634.419884999088,1622.47877705834,1636.634608991462,1643.69841825706,1621.532955292169,1583.824247006604,1593.47015355046,1593.179974435794,1580.477794586367,1588.471183440202,1592.486125618721,1597.416810261499,1652.196396535431,1667.988848770965,1670.99895575715,1733.818034915696,1665.276425110674,1656.322003072248,1648.193372528115,1612.99488924673,1646.393402292886,1635.082855248982,1634.221655148275,1580.177760485346,1567.458226489295,1564.916203044103,1536.812804708381,1550.966872995657,1555.456207933726,1557.760809248329,1601.232189642662,1565.060587724063,1564.071187201708,1568.374683345195,1603.90993559678,1629.295529341739,1664.570638093932,1764.930308580401,1784.773410988584,1785.555149097494,1804.161769138457,1780.570411862292,1776.353565834531,1798.165413545514,1809.639301345049,1816.803148929945,1846.482230513473,1800.907179880633,1834.17305670564,1855.454385276214,1895.938066007417,1898.518225584423,1887.315321843377,1891.491779137154,2128.609503943863,2078.853466304058,2052.994586063755,2046.087079973554,2060.532856135691,1980.515430625241,2061.635532253063,1962.243839589886,1956.517432116612,1962.630566110203,2011.126721063534,2022.388147537251,1940.4448103653,2065.941441310403,2062.269551857858,2080.85175751835,2085.426621540017,2064.074218165531,2030.000505811856,2048.535256652576,2025.9373276989,2051.7567179447,2085.71236132094,2165.297880951399,2190.704040369707,2242.961542677477,2294.095169853414,2232.025440210461,2354.386930946088,2359.889056483325,2341.07248115182,2352.098728488917,2222.346838400032,2200.333716180873,2260.882352575113,2317.465074373697,2219.951617876408,2227.936447135476,2199.540121188385,2216.929013563485,2176.839412657436,2198.421404460542,2236.186961753279,2327.048962711535,2310.955662998272,2264.911143671657,2273.632612114654,2230.87618439578,2376.771249284193,2345.260708744687,2299.526207275259,2294.3440063451,2279.941008568961,2350.026286008509,2360.782119589095,2211.170827863877,2270.977439333732,2267.087035484658,2241.510827004242,2220.151561688879,2331.660329435638,2341.160624264102,2588.769163919145,2618.329861896491,2524.501693891241,2575.924735433354,2477.937478430773,2515.319980393695,2589.482631630429,2528.328785451939,2467.328978513725,2489.618064653379,2470.263615103678,2454.909543339834,2307.587003498773,2241.942776155338,2236.739313097407,2219.614527445925,2268.870731507474,2267.907851752534,2257.054464645606,2314.59472753004,2344.001400019654,2282.485867015841,2301.737299308667,2307.432998483093,2294.715924804408,2290.084492877089,2298.669906674278,2372.760878734525,2424.073040465209,2420.968561479136,2487.85089719678,2499.492184156431,2505.076808453919,2657.990407976775,2641.536097492162,2780.372974906562,2826.821475855177,2807.371703053961,2788.561332499608,2874.945276040071,2943.723084777655,3015.438952062055,2977.08201668299,2974.131586131991,2926.285912906351,2988.317384063568,3113.408298287717,3173.62994683714,3242.047653822367,3380.803955542125,3347.690472423345,3431.75199772032,3421.89214692414,3487.190931866777,3634.311067557102,3581.534884908566,3822.365818156151,3861.900999013773,3893.613884196704,3916.041187699099,3887.473104733291,4070.604074986999,3978.685771378112,4007.912126075666,3879.038366642958,3738.381184462065,3514.222472178163,3643.280347379834,3525.893640670024,3171.293836639821,3515.688431854865,3493.430438779871,3322.891277320318,3353.371241538487,3454.257071389558,3588.493402189288,3591.54852790284,3505.218116182698,3560.26151146781,3516.096057627979,3507.660655947469,3644.767598784896,3508.247720108542,3274.901203544406,3316.682954677526,3332.089836615912,3320.281588983444,3362.838907503287,3453.436126179289,3695.239391141908,3503.653599684104,3539.763064064941,3508.578498448644,3245.500592698319,3022.005785247604,3157.683765827796,3101.190735674771,3083.706014766067,2982.6157347098,3064.911592229428,3065.682561565907,3152.191506651947,3147.13775429932,3199.769589894069,3218.967268642808,3138.814357009402,3157.619317481594,3131.419219740052,3259.252222765441,3259.503404256033,3213.689000494814,3018.549635877818,2976.090207515705,2988.548649045265,3102.151292365656,3115.023321573014,3136.57511039041,3064.591399560336,3015.159769616685,2975.72696606529,3038.344704666821,2910.684500017475,2908.98278490319,2931.310666913913,2948.303455265941,2881.795991615294,3035.758955126304,2943.585128384221,3095.996844292966,3120.549378254107,3071.324418093757,3656.390090299324,3792.486220211773,3741.897740560911,3766.398091341944,3727.065981583209,3750.077159389676,3825.277957577714,3893.392105894105,3840.68886040005,3765.30255677808,3748.63915233346,3761.069245647634,3813.452441559934,3780.711984734914,3766.637649941262,3814.932030146498,3871.082090621673,3812.701856549199,3679.376652374178,3683.025380134648,3705.89988440455,3666.82766472582,3498.55595422158,3559.447533625762,3465.316584199481,3478.774834988923,3565.123259186259,3618.508652976102,3510.358693528904,3480.471338427609,3555.96583955354,3511.28482815368,3516.88098000528,3494.798562173175,3417.797137297825,3357.100640072761,3395.304687339692,3365.944669708386,3442.910158110125,3374.605130306792,3371.278227967461,3435.31832763374,3438.009078999906,3417.898425547836,3295.808464429979,3069.04340083408,2984.398102498264,3066.247437954064,2928.601231006166,3016.083353794606,3064.092360519789,3099.710186131354,3102.090230229107,3132.980838609695,3173.504234138019,3252.654184707363,3488.538758027717,3446.7658893041,3389.441287038116,3428.552018766726,3505.222536388452,3522.801302812249,3533.118349531153,3443.073350817144,3482.983770593193,3336.380253038244,3173.763398327473,3278.186957527951,3254.611672582785,3272.850130670137,3316.942188773212,3276.981779516743,3233.076804863122,3204.246523746362,2983.300976694291,2906.715024176501,2682.437392818792,2415.631139431214,2455.51137665051,2341.590346028249,2685.012750687489,2602.184071276188,2608.035743628696,2558.790870730736,2726.777988551933,2703.550558764126,2662.780395092489,2569.860481215927,2592.249006212312,2613.139261446099,2614.601280626372,2640.59042073306,2575.643435503567,2630.298801764249,2623.289171364539,2763.25540736407,2767.840733546234,2745.164671605207,2683.080115490298,2457.277351754743,2527.026981401771,2526.738355300341,2527.690204915795,2513.364350100446,2430.020266143934,2534.904816840371,2437.14715575565,2448.30785784089,2367.770050950603,2223.780428382685,2272.697284995191,2296.40295207645,2359.565766831627,2389.47401112565,2342.963923694143,2362.300238174588,2445.08621032297,2418.08280831799,2322.643331748056]]},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="conclustion" class="level1">
+<h1>Conclustion</h1>
+<p>Read more about parametrized reporting in Quarto here.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

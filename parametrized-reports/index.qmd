@@ -1,0 +1,61 @@
+---
+title: "Crypto price analysis: `r params$crypto`"
+format: html
+params:
+  crypto: "bitcoin"
+toc: true
+---
+
+This report is gives some information about the `r params$crypto` price for the last 2 weeks.
+
+It is also used to show how parametrized reports in Quarto work.
+
+# Getting data
+
+ The `r params$stockTicker` price can be fetched from the coingecko API. Here is the code to do so:
+
+```{r, warning=F, message=F}
+# Libraries
+library(jsonlite)
+library(tidyverse)
+
+# Get today's date and the date 1 year ago
+end_date <- as.integer(as.POSIXct(Sys.Date()))
+start_date <- as.integer(as.POSIXct(Sys.Date() - 365))
+
+# Construct the API URL
+url <- paste0(
+  "https://api.coingecko.com/api/v3/coins/",
+  params$crypto,
+  "/market_chart/range?vs_currency=usd&from=",
+  start_date, "&to=", end_date
+)
+
+# Fetch the data using readLines
+json_data <- readLines(url, warn = FALSE)
+
+# Parse the JSON data
+data <- fromJSON(json_data)$prices %>% as.data.frame()
+colnames(data) <- c("timestamp", "value")
+
+# Format the date (date is provided in millisecond, thus division by 1000)
+data$timestamp <- date(data$timestamp / 1000)
+```
+
+# `r params$crypto` price evolution
+
+Now, let's make a chart to show the evolution using dygraph:
+
+```{r}
+library(dygraphs)
+
+dygraph(data)
+
+```
+
+
+
+
+# Conclustion
+
+Read more about parametrized reporting in Quarto here.

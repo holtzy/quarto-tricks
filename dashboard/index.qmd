@@ -1,0 +1,47 @@
+---
+title: "Dashboard"
+format: dashboard
+---
+
+```{r}
+library(ggiraph) # install.packages('ggiraph')
+library(ggplot2) # install.packages('ggplot2')
+library(dplyr) # install.packages('dplyr')
+library(patchwork) # install.packages('patchwork')
+library(tidyr) # install.packages('tidyr')
+
+data(mtcars)
+mtcars$car <- rownames(mtcars)
+
+```
+
+## Row {height=70%}
+
+```{r}
+p1 <- ggplot(mtcars, aes(wt, mpg, tooltip = car, data_id = car)) +
+  geom_point_interactive(size = 4)
+
+# data_id in the aes mapping
+p2 <- ggplot(mtcars, aes(x = reorder(car, mpg), y = mpg, tooltip = car, data_id = car)) +
+  geom_col_interactive() +
+  coord_flip()
+
+combined_plot <- p1 + p2 + plot_layout(ncol = 2)
+
+interactive_plot <- girafe(ggobj = combined_plot)
+interactive_plot
+```
+
+## Row {height=30%}
+
+```{r}
+ggplot(mtcars, aes(wt, mpg, tooltip = car, data_id = car)) +
+  geom_point_interactive(size = 4)
+```
+
+```{r}
+ggplot(mtcars, aes(x = reorder(car, mpg), y = mpg, tooltip = car, data_id = car)) +
+  geom_col_interactive() +
+  coord_flip()
+```
+
