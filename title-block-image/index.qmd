@@ -1,0 +1,39 @@
+---
+title: "A title section with a background image"
+subtitle: "<br/>It is possible to add a bakground image to your title block header.<br/>Note: It is better to use a custom title block instead of the title-block-banner option for more customization IMO.<br/><br/><br/><br/>"
+format: html
+author: "Yan Holtz"
+date: "September 2024"
+editor: visual
+toc: true
+title-block-banner: "./bg.png"
+---
+
+It is possible to add a background image to the document header!
+
+And here is some random content
+
+# Plot 1
+
+Running Code
+
+When you click the Render button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+plot(1,1)
+```
+
+# Plot 2
+
+A bit of code
+
+```{r}
+ #| echo: false
+ 2 * 2
+```
+
+Nice one isn't it! 🙃
+
+# Conclustion
+
+Pretty useful!
