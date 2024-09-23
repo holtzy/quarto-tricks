@@ -16,7 +16,7 @@ execute:
 
 This document shows how to create interactive code chunks in a Quarto document. 
 
-Read more in the [full blog post](https://www.productive-r-workflow.com/r/bonus/parameterized-reports)!
+Read more in the [full blog post](https://www.productive-r-workflow.com/r/bonus/webr)!
 
 ```{webr-r}
 # You can change the currency below!
