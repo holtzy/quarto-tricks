@@ -3,8 +3,15 @@ title: "webR demo"
 format: html
 editor: visual
 toc: true
+webr:
+  cell-options:
+    autorun: true
+    packages: ['jsonlite', 'ggplot2', 'dplyr']
 filters:
   - webr
+execute:
+  warning: false
+  message: false
 ---
 
 This document shows how to create interactive code chunks in a Quarto document. 
@@ -13,11 +20,13 @@ Read more in the [full blog post](https://www.productive-r-workflow.com/r/bonus/
 
 ```{webr-r}
 # You can change the currency below!
+# Try ethereum or litecoin for instance!
 currency <- "bitcoin"
 
 # Libraries
 library(jsonlite)
-library(tidyverse)
+library(ggplot2)
+library(dplyr)
 
 # Construct the API URL
 end_date <- as.integer(as.POSIXct(Sys.Date()))
@@ -38,4 +47,32 @@ ggplot(data, aes(x = timestamp, y = value)) +
   labs(title = paste0("Price of ", currency, " Over the Last Year"), x = "Date", y = "Price (USD)")
 ```
 
+
+```{r}
+# You can change the currency below!
+currency <- "bitcoin"
+
+# Libraries
+library(jsonlite)
+library(ggplot2)
+library(dplyr)
+
+# Construct the API URL
+end_date <- as.integer(as.POSIXct(Sys.Date()))
+start_date <- as.integer(as.POSIXct(Sys.Date() - 365))
+url <- paste0("https://api.coingecko.com/api/v3/coins/", currency, "/market_chart/range?vs_currency=usd&from=", start_date, "&to=", end_date)
+
+# Fetch the data using readLines
+json_data <- readLines(url, warn = FALSE)
+data <- fromJSON(json_data)$prices %>% as.data.frame()
+colnames(data) <- c("timestamp", "value")
+
+# Format the date (date is provided in millisecond, thus division by 1000)
+data$timestamp <- as.POSIXct(data$timestamp / 1000, origin = "1970-01-01", tz = "UTC")
+
+# Plot
+ggplot(data, aes(x = timestamp, y = value)) +
+  geom_line() + 
+  labs(title = paste0("Price of ", currency, " Over the Last Year"), x = "Date", y = "Price (USD)")
+```
 

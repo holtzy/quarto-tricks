@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -323,7 +357,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"# You can change the currency below!\ncurrency <- \"bitcoin\"\n\n# Libraries\nlibrary(jsonlite)\nlibrary(tidyverse)\n\n# Construct the API URL\nend_date <- as.integer(as.POSIXct(Sys.Date()))\nstart_date <- as.integer(as.POSIXct(Sys.Date() - 365))\nurl <- paste0(\"https://api.coingecko.com/api/v3/coins/\", currency, \"/market_chart/range?vs_currency=usd&from=\", start_date, \"&to=\", end_date)\n\n# Fetch the data using readLines\njson_data <- readLines(url, warn = FALSE)\ndata <- fromJSON(json_data)$prices %>% as.data.frame()\ncolnames(data) <- c(\"timestamp\", \"value\")\n\n# Format the date (date is provided in millisecond, thus division by 1000)\ndata$timestamp <- as.POSIXct(data$timestamp / 1000, origin = \"1970-01-01\", tz = \"UTC\")\n\n# Plot\nggplot(data, aes(x = timestamp, y = value)) +\n  geom_line() + \n  labs(title = paste0(\"Price of \", currency, \" Over the Last Year\"), x = \"Date\", y = \"Price (USD)\")","id":1,"options":{"dpi":72,"context":"interactive","label":"unnamed-chunk-1","fig-height":5,"warning":"true","editor-word-wrap":"true","editor-max-height":"","editor-quick-suggestions":"false","comment":"","read-only":"false","autorun":"false","out-width":"700px","message":"true","fig-cap":"","editor-font-scale":"1","output":"true","fig-width":7,"classes":"","out-height":"","results":"markup"}}];
+globalThis.qwebrCellDetails = [{"code":"# You can change the currency below!\n# Try ethereum or litecoin for instance!\ncurrency <- \"bitcoin\"\n\n# Libraries\nlibrary(jsonlite)\nlibrary(ggplot2)\nlibrary(dplyr)\n\n# Construct the API URL\nend_date <- as.integer(as.POSIXct(Sys.Date()))\nstart_date <- as.integer(as.POSIXct(Sys.Date() - 365))\nurl <- paste0(\"https://api.coingecko.com/api/v3/coins/\", currency, \"/market_chart/range?vs_currency=usd&from=\", start_date, \"&to=\", end_date)\n\n# Fetch the data using readLines\njson_data <- readLines(url, warn = FALSE)\ndata <- fromJSON(json_data)$prices %>% as.data.frame()\ncolnames(data) <- c(\"timestamp\", \"value\")\n\n# Format the date (date is provided in millisecond, thus division by 1000)\ndata$timestamp <- as.POSIXct(data$timestamp / 1000, origin = \"1970-01-01\", tz = \"UTC\")\n\n# Plot\nggplot(data, aes(x = timestamp, y = value)) +\n  geom_line() + \n  labs(title = paste0(\"Price of \", currency, \" Over the Last Year\"), x = \"Date\", y = \"Price (USD)\")","options":{"fig-width":7,"autorun":"true","classes":"","editor-font-scale":"1","out-width":"700px","message":"true","results":"markup","packages":"jsonliteggplot2dplyr","warning":"true","label":"unnamed-chunk-1","editor-word-wrap":"true","output":"true","comment":"","fig-height":5,"context":"interactive","editor-quick-suggestions":"false","dpi":72,"fig-cap":"","read-only":"false","editor-max-height":"","out-height":""},"id":1}];
 
 </script>
 <script type="module">
@@ -1839,6 +1873,40 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 <p>Read more in the <a href="https://www.productive-r-workflow.com/r/bonus/parameterized-reports">full blog post</a>!</p>
 <div id="qwebr-insertion-location-1"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># You can change the currency below!</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>currency <span class="ot">&lt;-</span> <span class="st">"bitcoin"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Libraries</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Construct the API URL</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>end_date <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">as.POSIXct</span>(<span class="fu">Sys.Date</span>()))</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>start_date <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">as.POSIXct</span>(<span class="fu">Sys.Date</span>() <span class="sc">-</span> <span class="dv">365</span>))</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"https://api.coingecko.com/api/v3/coins/"</span>, currency, <span class="st">"/market_chart/range?vs_currency=usd&amp;from="</span>, start_date, <span class="st">"&amp;to="</span>, end_date)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch the data using readLines</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>json_data <span class="ot">&lt;-</span> <span class="fu">readLines</span>(url, <span class="at">warn =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(json_data)<span class="sc">$</span>prices <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(data) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"timestamp"</span>, <span class="st">"value"</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Format the date (date is provided in millisecond, thus division by 1000)</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>timestamp <span class="ot">&lt;-</span> <span class="fu">as.POSIXct</span>(data<span class="sc">$</span>timestamp <span class="sc">/</span> <span class="dv">1000</span>, <span class="at">origin =</span> <span class="st">"1970-01-01"</span>, <span class="at">tz =</span> <span class="st">"UTC"</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> timestamp, <span class="at">y =</span> value)) <span class="sc">+</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">paste0</span>(<span class="st">"Price of "</span>, currency, <span class="st">" Over the Last Year"</span>), <span class="at">x =</span> <span class="st">"Date"</span>, <span class="at">y =</span> <span class="st">"Price (USD)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 
 </main>
 <!-- /main column -->
