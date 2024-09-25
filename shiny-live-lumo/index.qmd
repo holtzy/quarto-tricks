@@ -1,0 +1,140 @@
+---
+title: "Bringing Quarto to Life"
+description: "Quarto outputs HTML files that are static. Basically, you download the HTML file and read it with your browser, but R is not available anymore to play with the data.<br/>This document shows how to use <code>webR</code> and <code>shinylive</code> to make your browser actually speaks R."
+standalone: true
+format:
+  html:
+    toc: true
+    code-fold: true
+    code-summary: "Code"
+    toc-location: left
+    toc-title: " "
+    theme: [custom.scss]
+    include-after-body: "footer.html"
+    template-partials:
+      - title-block.html
+    css: style.css
+    smooth-scroll: true
+    code-annotations: hover
+    title-block-banner: true 
+author: Holtz Yan
+date: last-modified
+filters:
+  - shinylive
+---
+
+
+## Before we start
+
+Before we jump to the spicy part, I would just like to make sure you understood that:
+
+- this webpage is the output of a quarto `.qmd` file
+- this webpage is hosted on [github](https://github.com/holtzy/quarto-tricks) as a __static__ website.
+    - it is 100% __free__
+    - no server to maintain
+    - if 1 million users connect in the same time, it will still run smoothly!
+- when you click on a button below, a new R chart is generated on the fly! Nothing is computed upfront. Your browser does the job: it speaks R thanks to `webR`.
+
+
+
+## UI components in Quarto
+
+Now the juicy part.
+
+Use the buttons below to refine your analysis. 
+When you pick a new currency, another color or another line width, your browser will run some R code to generate a new chart 😳
+
+
+```{shinylive-r}
+#| standalone: true
+#| viewerHeight: 1000
+library(shiny)
+library(jsonlite)
+library(ggplot2)
+library(dplyr)
+library(shinylive)
+
+ui <- fluidPage(
+  fluidRow(
+    column(
+      2,
+      selectInput("currency",
+        "Select a cryptocurrency:",
+        choices = c(
+          "bitcoin", "ethereum", "tether", "binancecoin", "ripple",
+          "solana", "cardano", "dogecoin", "polygon", "polkadot",
+          "litecoin", "bitcoin-cash", "chainlink", "stellar", "uniswap",
+          "monero", "ethereum-classic", "cosmos", "tron", "vechain",
+          "theta", "filecoin", "aave", "shiba-inu", "algorand",
+          "hedera", "elrond", "fantom", "near-protocol", "quant",
+          "dash", "zilliqa", "sushi", "eos", "bitcoin-gold",
+          "kava", "celo", "okb", "harmony", "chiliz",
+          "render-token", "decentraland", "the-sandbox", "curve-dao-token", "yearn-finance",
+          "iota", "sandbox", "pancakeswap-token", "nexo", "waves"
+        ), selected = "bitcoin"
+      )
+    ),
+    column(
+      2,
+      sliderInput("lineWidth",
+        "Select line width:",
+        min = 0.5, max = 5, value = 1, step = 0.5
+      )
+    ),
+    column(
+      2,
+      selectInput("lineColor",
+        "Select line color:",
+        choices = c("blue", "red", "green", "purple", "black"),
+        selected = "blue"
+      )
+    )
+  ),
+
+  # Main panel for displaying the plot
+  mainPanel(
+    plotOutput("pricePlot")
+  )
+)
+
+# Define server logic
+server <- function(input, output) {
+  output$pricePlot <- renderPlot({
+    # Get selected currency, line width, and line color
+    currency <- input$currency
+    lineWidth <- input$lineWidth
+    lineColor <- input$lineColor
+
+    # Construct the API URL
+    end_date <- as.integer(as.POSIXct(Sys.Date()))
+    start_date <- as.integer(as.POSIXct(Sys.Date() - 365))
+    url <- paste0("https://api.coingecko.com/api/v3/coins/", currency, "/market_chart/range?vs_currency=usd&from=", start_date, "&to=", end_date)
+
+    # Fetch the data
+    json_data <- readLines(url, warn = FALSE)
+    data <- fromJSON(json_data)$prices %>% as.data.frame()
+    colnames(data) <- c("timestamp", "value")
+
+    # Format the date (date is provided in milliseconds, hence the division by 1000)
+    data$timestamp <- as.POSIXct(data$timestamp / 1000, origin = "1970-01-01", tz = "UTC")
+
+    # Plot the data with dynamic line width and color
+    ggplot(data, aes(x = timestamp, y = value)) +
+      geom_line(size = lineWidth, color = lineColor) +
+      labs(
+        title = paste0("Price of ", currency, " Over the Last Year"),
+        x = "Date", y = "Price (USD)"
+      )
+  })
+}
+
+# Run the application
+shinyApp(ui = ui, server = server)
+
+
+```
+
+
+## How and Why
+
+Everything is explained in this [dedicated blog post](https://www.productive-r-workflow.com/r/bonus/webr)!
