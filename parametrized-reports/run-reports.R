@@ -17,9 +17,7 @@ for (crypto in cryptos) {
   quarto_render(
     input = report_path, 
     output_file = paste0("report_" , crypto , ".html")
-    params = list(crypto = crypto),
-    
+    params = list(crypto = crypto)
   )
-    
     
 }
